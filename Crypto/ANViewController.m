@@ -85,6 +85,9 @@ int const kCryptogramsNumberForThirdCase = 5;
 {
     [super viewDidLoad];
     
+    [self.collectionView registerNib:[UINib nibWithNibName:@"ANCollectionViewCell" bundle:[NSBundle mainBundle]]
+          forCellWithReuseIdentifier:@"Identifier"];
+    
     UIImage* selection = [[UIImage imageNamed:@"simpleButtonSelection"]
                     resizableImageWithCapInsets:UIEdgeInsetsMake(15, 15, 15, 15)];
     
@@ -124,7 +127,14 @@ int const kCryptogramsNumberForThirdCase = 5;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ANCollectionViewCell * cell = [[[UINib nibWithNibName:@"ANCollectionViewCell" bundle:[NSBundle mainBundle]] instantiateWithOwner:self options:nil] lastObject];
+    ANCollectionViewCell *cell = (ANCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"Identifier"
+                                                                                                   forIndexPath:indexPath];
+    if (cell == nil){
+        cell = [[ANCollectionViewCell alloc] init];
+        //        cell = [[[UINib nibWithNibName:@"ANCollectionViewCell" bundle:[NSBundle mainBundle]] instantiateWithOwner:self options:nil] lastObject];
+        
+    }
+    
     cell.delegate = self;
     NSInteger row = indexPath.row;
     int i = row / (int)self.matrixSize.width;
